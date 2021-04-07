@@ -10,17 +10,30 @@ import { PokemonForm, fetchPokemon, PokemonInfoFallback, PokemonDataView } from 
 
 function PokemonInfo({ pokemonName }) {
     // 🐨 Have state for the pokemon (null)
+
+    /*
     const [pokemon, setPokemon] = React.useState(null)
     const [error, setError] = React.useState(null)
     const [status, setStatus] = React.useState('idle') // Ocioso
+    */
+   const [state,setState] = React.useState({
+       pokemon:null,
+       error: null,
+       status: 'idle'
+   })
+   // Leitura: state.pokemon
+   // Atualização: setState{pokemon: null}
+   // Gerando variáveis individuais para cada estado via desestruturação
+   const { pokemon, error, status } = state
 
     React.useEffect(() => {
 
         if (!pokemonName) return // Nome vazio, retorna sem fazer nada
 
         // Resetar o estado do pokemon
-        setPokemon(null)
-        setError(null)
+        //setPokemon(null)
+        //setError(null)
+        setState({ pokemon: null, error: null })
 
         /*
         // Essa abordagem não funciona porque o JS trabalha de forma ASSÍNCRONA
@@ -46,14 +59,17 @@ function PokemonInfo({ pokemonName }) {
         // MÉTODO 2: função com async...await     
         async function getPokemonFromServer() {
             try {   // TENTA fazer a chamada ao servidor remoto da API
-                setStatus('pending')
+                //setStatus('pending')
+                setState({status: 'pending'})
                 const pokemonData = await fetchPokemon(pokemonName)
-                setPokemon(pokemonData)
-                setStatus('resolved')
+                //setPokemon(pokemonData)
+                //setStatus('resolved')
+                setState({pokemon: pokemonData, status: 'resolved'})
             }
             catch (erro) {   // Em caso de erro no bloco try, caímos no bloco catch()
-                setError(erro)
-                setStatus('rejected')
+                //setError(erro)
+                //setStatus('rejected')
+                setState({error: erro, status: 'rejected'})
 
             }
         }
