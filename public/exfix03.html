@@ -50,18 +50,30 @@
          * classif
          * imc
       */
+
+      /*
       const [peso, setPeso] = React.useState()
       const [altura, setAltura] = React.useState()
       const [classif, setClassif] = React.useState()
       const [imc, setImc] = React.useState()
+      */
 
-      
+      const [state, setState] = React.useEffect({
+          peso: undefined,
+          altura: undefined,
+          classif: undefined,
+          imc: undefined
+      })
+      // Gerando variáveis individuais para leitura, com desestruturação
+      const { peso, altura, classif, imc } = state
+
+
 
       function handleInputChange(event) {
         /* Faça as modificações necessárias na manipulação das variáveis de estado
            nas linhas abaixo. */
-        if(event.target.id === 'peso') setPeso(event.target.value)
-        else if(event.target.id === 'altura') setAltura(event.target.value)
+        if(event.target.id === 'peso') setState({...state, peso: event.target.value})
+        else if(event.target.id === 'altura') setState({...state, altura: event.target.value})
 
         
       }
@@ -72,26 +84,40 @@
         para que o código funcione. 
       */
 
+      /*
+      Ciclo do useEffect()
+      1. O componente sofre uma atualização de estado
+      2. O componente é atualizado na tela para refletir a mudança de estado
+      3. useEffect() é executado (como efeito colateral da atualização do componente)
+      */
+
       React.useEffect(() => {
+
+        let imcTemp, classifTemp
         
-        if(isNaN(peso) || isNaN(altura)) setImc('---')
-        else setImc(peso / altura ** 2)
+        if(isNaN(peso) || isNaN(altura)) imcTemp = '---'
+        else imcTemp = peso / altura ** 2
         
         console.log('UseEffect', {imc})
         if(imc < 18.5) 
-          setClassif('Abaixo do peso')
-        else if(imc > 18.5 && imc < 25)
-          setClassif('Peso Normal')
-        else if(imc >= 25 && imc < 30)
-          setClassif('Sobrepeso')
-        else if(imc >= 30 && imc < 35)
-          setClassif('Obesidade Grau I')
-        else if(imc >= 35 && imc < 40)
-          setClassif('Obesidade Grau II')
-        else if(imc >= 40)
-          setClassif('Obesidade Grau III ou Mórbida')
+          classifTemp = 'Abaixo do peso'
+        else if(imcTemp > 18.5 && imcTemp < 25)
+          classifTemp = 'Peso Normal'
+        else if(imcTemp >= 25 && imcTemp < 30)
+          classifTemp = 'Sobrepeso'
+        else if(imcTemp >= 30 && imcTemp < 35)
+          classifTemp = 'Obesidade Grau I'
+        else if(imcTemp >= 35 && imcTemp < 40)
+          classifTemp = 'Obesidade Grau II'
+        else if(imcTemp >= 40)
+          classifTemp = 'Obesidade Grau III ou Mórbida'
         else
-          setClassif('')
+          classifTemp = ''
+
+        //setImc(imcTemp)  
+        //setClassif(classifTemp)
+        setState({...state, imc: imcTemp, classif: classifTemp})
+
       }, [peso, altura])
       
       return (
